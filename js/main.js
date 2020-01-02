@@ -20,10 +20,14 @@ var render = function render() {
 
   for (var y = 0; y < 2; y++) {
     for (var x = 0; x < 4; x++) {
-      if (current_mino[y][x]) {
-        ctx.strokeRect((current_x + x) * block_W, (current_y + y) * block_H, block_W, block_H);
-      }
+      drawBlock(current_x + x, current_y + y, current_mino[y][x]);
     }
+  }
+};
+
+var drawBlock = function drawBlock(x, y, block) {
+  if (block) {
+    ctx.strokeRect(x * block_W, y * block_H, block_W - 1, block_H - 1);
   }
 };
 
