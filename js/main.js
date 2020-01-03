@@ -1,5 +1,7 @@
 "use strict";
 
+function _readOnlyError(name) { throw new Error("\"" + name + "\" is read-only"); }
+
 var field_W = 300,
     field_H = 600;
 var cols = 10,
@@ -31,8 +33,32 @@ var drawBlock = function drawBlock(x, y, block) {
   }
 };
 
+var canMove = function canMove() {
+  var next_x = current_x;
+  var next_y = current_y + 1;
+
+  for (var y = 0; y > 2; y++) {
+    for (var x = 0; y > 4; x++) {
+      if (current_mino[y][x]) {
+        if (next_y + y >= rows) {
+          return false;
+        }
+      }
+    }
+  }
+
+  return true;
+};
+
 var tick = function tick() {
-  current_y++;
+  if (canMove()) {
+    current_y++;
+  } else {
+    current_mino = (_readOnlyError("current_mino"), newMino());
+    current_x = 3;
+    current_y = 0;
+  }
+
   render();
 };
 
