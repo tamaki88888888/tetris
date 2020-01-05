@@ -33,7 +33,7 @@ var render = function render() {
     }
   }
 
-  for (var y = 0; y < 2; y++) {
+  for (var y = 0; y < 4; y++) {
     for (var x = 0; x < 4; x++) {
       drawBlock(current_x + x, current_y + y, current_mino[y][x]);
     }
@@ -55,7 +55,7 @@ var tick = function tick() {
     fix();
     var next_mino = newMino();
 
-    for (var y = 0; y < 2; y++) {
+    for (var y = 0; y < 4; y++) {
       for (var x = 0; x < 4; x++) {
         current_mino[y][x] = next_mino[y][x];
       }
@@ -69,7 +69,7 @@ var tick = function tick() {
 };
 
 var fix = function fix() {
-  for (var y = 0; y < 2; y++) {
+  for (var y = 0; y < 4; y++) {
     for (var x = 0; x < 4; x++) {
       if (current_mino[y][x]) {
         field[current_y + y][current_x + x] = current_mino[y][x];
@@ -78,13 +78,14 @@ var fix = function fix() {
   }
 };
 
-var canMove = function canMove(move_x, move_y) {
+var canMove = function canMove(move_x, move_y, move_mino) {
   var next_x = current_x + move_x;
   var next_y = current_y + move_y;
+  var next_mino = move_mino || current_mino;
 
-  for (var y = 0; y < 2; y++) {
+  for (var y = 0; y < 4; y++) {
     for (var x = 0; x < 4; x++) {
-      if (current_mino[y][x]) {
+      if (next_mino[y][x]) {
         if (next_y + y >= rows || next_x + x < 0 || next_x + x >= cols || field[next_y + y][next_x + x]) {
           return false;
         }
@@ -119,6 +120,16 @@ document.body.onkeydown = function (e) {
       break;
 
     case 38:
+      var rotated = rotate(current_mino);
+
+      if (canMove(0, 0, rotated)) {
+        for (var y = 0; y < 4; y++) {
+          for (var x = 0; x < 4; x++) {
+            current_mino[y][x] = rotated[y][x];
+          }
+        }
+      }
+
       break;
   }
 
