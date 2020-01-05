@@ -48,11 +48,35 @@ var drawBlock = function drawBlock(x, y, block) {
   }
 };
 
+var clearRows = function clearRows() {
+  for (var y = rows - 1; y >= 0; y--) {
+    var fill = true;
+
+    for (var x = 0; x < cols; x++) {
+      if (field[y][x] == 0) {
+        fill = false;
+        break;
+      }
+    }
+
+    if (fill) {
+      for (var v = y - 1; v >= 0; v--) {
+        for (var x = 0; x < cols; x++) {
+          field[v + 1][x] = field[v][x];
+        }
+      }
+
+      y++;
+    }
+  }
+};
+
 var tick = function tick() {
   if (canMove(0, 1)) {
     current_y++;
   } else {
     fix();
+    clearRows();
     var next_mino = newMino();
 
     for (var y = 0; y < 4; y++) {
