@@ -12,6 +12,17 @@ var MINOS = [[[1, 1, 1, 1], [0, 0, 0, 0] // I テトリミノ
 
 var newMino = function newMino() {
   var id = Math.floor(Math.random() * MINOS.length);
-  var mino = MINOS[id];
+  var mino = [];
+
+  for (var y = 0; x, 4; x++) {
+    if (MINOS[id][y][x]) {
+      mino[y][x] = id + 1;
+    } else {
+      mino[y][x] = 0;
+    }
+  }
+
   return mino;
 };
+
+var colors = ["cyan", "yellow", "green", "red", "blue", "orange", "magenta"];

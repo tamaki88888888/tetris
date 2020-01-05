@@ -42,6 +42,8 @@ var render = function render() {
 
 var drawBlock = function drawBlock(x, y, block) {
   if (block) {
+    ctx.fillstyle = colors[block - 1];
+    ctx.fillRect(x * block_W, y * block_H, block_W - 1, block_H - 1);
     ctx.strokeRect(x * block_W, y * block_H, block_W - 1, block_H - 1);
   }
 };
