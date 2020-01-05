@@ -47,7 +47,7 @@ var drawBlock = function drawBlock(x, y, block) {
 };
 
 var tick = function tick() {
-  if (canMove()) {
+  if (canMove(0, 1)) {
     current_y++;
   } else {
     fix();
@@ -76,14 +76,14 @@ var fix = function fix() {
   }
 };
 
-var canMove = function canMove() {
-  var next_x = current_x;
-  var next_y = current_y + 1;
+var canMove = function canMove(move_x, move_y) {
+  var next_x = current_x + move_x;
+  var next_y = current_y + move_y;
 
   for (var y = 0; y < 2; y++) {
     for (var x = 0; x < 4; x++) {
       if (current_mino[y][x]) {
-        if (next_y + y >= rows || field[next_y + y][next_x + x]) {
+        if (next_y + y >= rows || next_x + x < 0 || next_x + x >= cols || field[next_y + y][next_x + x]) {
           return false;
         }
       }
@@ -91,6 +91,36 @@ var canMove = function canMove() {
   }
 
   return true;
+};
+
+document.body.onkeydown = function (e) {
+  switch (e.keyCode) {
+    case 37:
+      if (canMove(-1, 0)) {
+        current_x--;
+      }
+
+      break;
+
+    case 39:
+      if (canMove(1, 0)) {
+        current_x++;
+      }
+
+      break;
+
+    case 40:
+      if (canMove(0, 1)) {
+        current_y++;
+      }
+
+      break;
+
+    case 38:
+      break;
+  }
+
+  render();
 };
 
 render();
