@@ -10,8 +10,19 @@ var canvas = document.getElementById('field');
 var ctx = canvas.getContext('2d');
 var current_x = 3,
     current_y = 0;
+var audioElem;
 var current_mino = newMino();
 var field = [];
+
+var PlaySound = function PlaySound() {
+  audioElem = new Audio();
+  audioElem.src = "opening.mp3";
+  audioElem.play();
+};
+
+var StopSound = function StopSound() {
+  audioElem.pause();
+};
 
 for (var y = 0; y < rows; y++) {
   field[y] = [];
@@ -28,7 +39,6 @@ var render = function render() {
   for (var y = 0; y < rows; y++) {
     for (var x = 0; x < cols; x++) {
       drawBlock(x, y, field[y][x]);
-      console.log(x, y, field[y][x]);
     }
   }
 
@@ -42,7 +52,6 @@ var render = function render() {
 var drawBlock = function drawBlock(x, y, block) {
   if (block) {
     ctx.fillStyle = colors[block - 1];
-    console.log(colors[block - 1]);
     ctx.fillRect(x * block_W, y * block_H, block_W - 1, block_H - 1);
     ctx.strokeRect(x * block_W, y * block_H, block_W - 1, block_H - 1);
   }
@@ -75,6 +84,7 @@ var tick = function tick() {
   if (canMove(0, 1)) {
     current_y++;
   } else {
+    $(".btn").removeClass("start");
     fix();
     clearRows();
     var next_mino = newMino();
@@ -160,5 +170,17 @@ document.body.onkeydown = function (e) {
   render();
 };
 
-render();
-setInterval(tick, 500);
+var playStart = function playStart() {
+  render();
+  setInterval(tick, 500);
+};
+
+$(".btn").click(function () {
+  if ($(".btn").hasClass("start")) {
+    playStart();
+    PlaySound();
+    $(".btn").removeClass("start");
+  }
+
+  ;
+});
