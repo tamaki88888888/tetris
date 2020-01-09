@@ -12,8 +12,6 @@ var current_x = 3,
     current_y = 0;
 var current_mino = newMino();
 var field = [];
-ctx.strokeStyle = "black";
-ctx.strokeRect(0, 0, block_W, block_H);
 
 for (var y = 0; y < rows; y++) {
   field[y] = [];
@@ -30,6 +28,7 @@ var render = function render() {
   for (var y = 0; y < rows; y++) {
     for (var x = 0; x < cols; x++) {
       drawBlock(x, y, field[y][x]);
+      console.log(x, y, field[y][x]);
     }
   }
 
@@ -42,7 +41,8 @@ var render = function render() {
 
 var drawBlock = function drawBlock(x, y, block) {
   if (block) {
-    ctx.fillstyle = colors[block - 1];
+    ctx.fillStyle = colors[block - 1];
+    console.log(colors[block - 1]);
     ctx.fillRect(x * block_W, y * block_H, block_W - 1, block_H - 1);
     ctx.strokeRect(x * block_W, y * block_H, block_W - 1, block_H - 1);
   }

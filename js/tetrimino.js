@@ -9,6 +9,7 @@ var MINOS = [[[0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], // I テトリミノ
 [0, 0, 0, 0]], [[0, 0, 0, 0], [0, 0, 1, 0], [1, 1, 1, 0], // L テトリミノ
 [0, 0, 0, 0]], [[0, 0, 0, 0], [0, 1, 0, 0], [1, 1, 1, 0], // T テトリミノ
 [0, 0, 0, 0]]];
+var colors = ["cyan", "yellow", "green", "red", "blue", "orange", "magenta"];
 
 var newMino = function newMino() {
   var id = Math.floor(Math.random() * MINOS.length);
@@ -44,5 +45,3 @@ var rotate = function rotate(mino) {
 
   return rotated;
 };
-
-var colors = ["cyan", "yellow", "green", "red", "blue", "orange", "magenta"];
