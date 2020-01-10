@@ -6,10 +6,11 @@ var cols = 10,
     rows = 20;
 var block_W = field_W / cols,
     block_H = field_H / rows;
+var gameOver = rows - 2;
 var canvas = document.getElementById('field');
 var ctx = canvas.getContext('2d');
 var current_x = 3,
-    current_y = 0;
+    current_y = -1;
 var audioElem;
 var current_mino = newMino();
 var field = [];
@@ -84,7 +85,6 @@ var tick = function tick() {
   if (canMove(0, 1)) {
     current_y++;
   } else {
-    $(".btn").removeClass("start");
     fix();
     clearRows();
     var next_mino = newMino();
@@ -95,8 +95,13 @@ var tick = function tick() {
       }
     }
 
+    if (current_y <= 1) {
+      console.log("gameOver");
+      clearInterval(playStart);
+    }
+
     current_x = 3;
-    current_y = 0;
+    current_y = -1;
   }
 
   render();
@@ -170,17 +175,17 @@ document.body.onkeydown = function (e) {
   render();
 };
 
-var playStart = function playStart() {
-  render();
-  setInterval(tick, 500);
+var canTouchBtn = function canTouchBtn() {
+  $(".btn").removeClass("start");
 };
 
 $(".btn").click(function () {
   if ($(".btn").hasClass("start")) {
-    playStart();
+    render();
+
+    var _playStart = setInterval(tick, 500);
+
     PlaySound();
     $(".btn").removeClass("start");
-  }
-
-  ;
+  };
 });
