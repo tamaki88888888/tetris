@@ -11,12 +11,11 @@ var canvas = document.getElementById('field');
 var ctx = canvas.getContext('2d');
 var current_x = 3,
     current_y = -1;
-var audioElem;
 var current_mino = newMino();
 var field = [];
 
 var PlaySound = function PlaySound() {
-  audioElem = new Audio();
+  var audioElem = new Audio();
   audioElem.src = "opening.mp3";
   audioElem.play();
 };
@@ -95,9 +94,8 @@ var tick = function tick() {
       }
     }
 
-    if (current_y <= 1) {
-      console.log("gameOver");
-      clearInterval(playStart);
+    if (current_y <= -1) {
+      return current_y;
     }
 
     current_x = 3;
@@ -135,44 +133,46 @@ var canMove = function canMove(move_x, move_y, move_mino) {
   return true;
 };
 
-document.body.onkeydown = function (e) {
-  switch (e.keyCode) {
-    case 37:
-      if (canMove(-1, 0)) {
-        current_x--;
-      }
+var arrowBtn = function arrowBtn() {
+  document.body.onkeydown = function (e) {
+    switch (e.keyCode) {
+      case 37:
+        if (canMove(-1, 0)) {
+          current_x--;
+        }
 
-      break;
+        break;
 
-    case 39:
-      if (canMove(1, 0)) {
-        current_x++;
-      }
+      case 39:
+        if (canMove(1, 0)) {
+          current_x++;
+        }
 
-      break;
+        break;
 
-    case 40:
-      if (canMove(0, 1)) {
-        current_y++;
-      }
+      case 40:
+        if (canMove(0, 1)) {
+          current_y++;
+        }
 
-      break;
+        break;
 
-    case 38:
-      var rotated = rotate(current_mino);
+      case 38:
+        var rotated = rotate(current_mino);
 
-      if (canMove(0, 0, rotated)) {
-        for (var y = 0; y < 4; y++) {
-          for (var x = 0; x < 4; x++) {
-            current_mino[y][x] = rotated[y][x];
+        if (canMove(0, 0, rotated)) {
+          for (var y = 0; y < 4; y++) {
+            for (var x = 0; x < 4; x++) {
+              current_mino[y][x] = rotated[y][x];
+            }
           }
         }
-      }
 
-      break;
-  }
+        break;
+    }
 
-  render();
+    render();
+  };
 };
 
 var canTouchBtn = function canTouchBtn() {
@@ -181,11 +181,18 @@ var canTouchBtn = function canTouchBtn() {
 
 $(".btn").click(function () {
   if ($(".btn").hasClass("start")) {
+    arrowBtn();
     render();
+    var over = setInterval(function () {
+      if (tick() <= -1) {
+        clearInterval(over);
+      }
 
-    var _playStart = setInterval(tick, 500);
-
+      tick;
+    }, 500);
     PlaySound();
     $(".btn").removeClass("start");
-  };
+  }
+
+  ;
 });
