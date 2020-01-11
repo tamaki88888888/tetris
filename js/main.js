@@ -13,15 +13,15 @@ var current_x = 3,
     current_y = -1;
 var current_mino = newMino();
 var field = [];
+var audioElem = new Audio();
+audioElem.src = "opening.mp3";
 
-var PlaySound = function PlaySound() {
-  var audioElem = new Audio();
-  audioElem.src = "opening.mp3";
-  audioElem.play();
+var PlaySound = function PlaySound(music) {
+  music.play();
 };
 
-var StopSound = function StopSound() {
-  audioElem.pause();
+var StopSound = function StopSound(music) {
+  music.pause();
 };
 
 for (var y = 0; y < rows; y++) {
@@ -31,6 +31,16 @@ for (var y = 0; y < rows; y++) {
     field[y][x] = 0;
   }
 }
+
+var deleteAll = function deleteAll() {
+  for (var y = 0; y < rows; y++) {
+    field[y] = [];
+
+    for (var x = 0; x < cols; x++) {
+      field[y][x] = 0;
+    }
+  }
+};
 
 var render = function render() {
   ctx.clearRect(0, 0, field_W, field_H);
@@ -176,7 +186,7 @@ var arrowBtn = function arrowBtn() {
 };
 
 var canTouchBtn = function canTouchBtn() {
-  $(".btn").removeClass("start");
+  $(".btn").addClass("start");
 };
 
 $(".btn").click(function () {
@@ -186,11 +196,14 @@ $(".btn").click(function () {
     var over = setInterval(function () {
       if (tick() <= -1) {
         clearInterval(over);
+        StopSound(audioElem);
+        deleteAll();
+        canTouchBtn();
       }
 
       tick;
     }, 500);
-    PlaySound();
+    PlaySound(audioElem);
     $(".btn").removeClass("start");
   }
 
