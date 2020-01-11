@@ -14,7 +14,7 @@ var current_x = 3,
 var current_mino = newMino();
 var field = [];
 var audioElem = new Audio();
-audioElem.src = "opening.mp3";
+audioElem.src = "tetris.mp3";
 
 var PlaySound = function PlaySound(music) {
   music.play();
