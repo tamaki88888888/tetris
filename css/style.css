@@ -1,3 +1,9 @@
 #field {
   border: solid 1px #000000;
 }
+
+.number {
+  height: 20px;
+  width: 20px;
+  margin: auto;
+}

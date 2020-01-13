@@ -15,6 +15,8 @@ var current_mino = newMino();
 var field = [];
 var audioElem = new Audio();
 audioElem.src = "tetris.mp3";
+var counter = 0;
+var speedLevel = 1;
 
 var PlaySound = function PlaySound(music) {
   music.play();
@@ -23,14 +25,6 @@ var PlaySound = function PlaySound(music) {
 var StopSound = function StopSound(music) {
   music.pause();
 };
-
-for (var y = 0; y < rows; y++) {
-  field[y] = [];
-
-  for (var x = 0; x < cols; x++) {
-    field[y][x] = 0;
-  }
-}
 
 var deleteAll = function deleteAll() {
   for (var y = 0; y < rows; y++) {
@@ -79,6 +73,9 @@ var clearRows = function clearRows() {
     }
 
     if (fill) {
+      countUp();
+      levelUp();
+
       for (var v = y - 1; v >= 0; v--) {
         for (var x = 0; x < cols; x++) {
           field[v + 1][x] = field[v][x];
@@ -185,24 +182,46 @@ var arrowBtn = function arrowBtn() {
   };
 };
 
+var countUp = function countUp() {
+  counter++;
+  var CountText = document.getElementById("js_set_count");
+  CountText.innerText = counter;
+};
+
+var levelUp = function levelUp() {
+  speedLevel = Math.floor(1 + counter / 1);
+  console.log(speedLevel);
+};
+
 var canTouchBtn = function canTouchBtn() {
   $(".btn").addClass("start");
 };
 
+var speed = function speed(Level) {
+  var num = 500 / Level;
+  return num;
+};
+
+var gameStart = function gameStart() {
+  var over = setInterval(function () {
+    if (tick() <= -1) {
+      clearInterval(over);
+      StopSound(audioElem);
+      deleteAll();
+      canTouchBtn();
+    } else {
+      arrowBtn();
+    }
+
+    tick;
+  }, speed(speedLevel));
+};
+
 $(".btn").click(function () {
   if ($(".btn").hasClass("start")) {
-    arrowBtn();
+    deleteAll();
     render();
-    var over = setInterval(function () {
-      if (tick() <= -1) {
-        clearInterval(over);
-        StopSound(audioElem);
-        deleteAll();
-        canTouchBtn();
-      }
-
-      tick;
-    }, 500);
+    gameStart();
     PlaySound(audioElem);
     $(".btn").removeClass("start");
   }
