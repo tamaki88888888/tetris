@@ -75,6 +75,7 @@ var clearRows = function clearRows() {
     if (fill) {
       countUp();
       levelUp();
+      speedUp();
 
       for (var v = y - 1; v >= 0; v--) {
         for (var x = 0; x < cols; x++) {
@@ -189,7 +190,7 @@ var countUp = function countUp() {
 };
 
 var levelUp = function levelUp() {
-  speedLevel = Math.floor(1 + counter / 1);
+  speedLevel = Math.floor(1 + counter / 4);
   console.log(speedLevel);
 };
 
@@ -197,24 +198,25 @@ var canTouchBtn = function canTouchBtn() {
   $(".btn").addClass("start");
 };
 
-var speed = function speed(Level) {
-  var num = 500 / Level;
-  return num;
-};
-
 var gameStart = function gameStart() {
+  clearInterval(over);
   var over = setInterval(function () {
     if (tick() <= -1) {
       clearInterval(over);
       StopSound(audioElem);
-      deleteAll();
       canTouchBtn();
     } else {
       arrowBtn();
     }
 
     tick;
-  }, speed(speedLevel));
+  }, 500 / speedLevel + 100);
+};
+
+var speedUp = function speedUp() {
+  if (counter % 4 == 0) {
+    gameStart();
+  }
 };
 
 $(".btn").click(function () {
